@@ -140,169 +140,180 @@
             }
         </style>
     </head>
-    <body>
+    
+<body>
 
-        <div class="container">
-            <h2>Student Registration Form</h2>
+    <div class="container">
+        <h2>Student Registration Form</h2>
 
-            <form action="{{ route('student.register.store') }}" method="POST" id="registrationForm"> 
-                @csrf
-                <h3>Student Details</h3>
+        <form action="{{ route('student.register.store') }}" method="POST" id="registrationForm">
+            @csrf
 
-                <div class="grid">
-                    <div class="input-box">
-                        <label for="fullName">Full Name</label>
-                        <input type="text" id="fullName" name="fullName" required value="{{ old('fullName') }}">
-                        @error('fullName')<span class="error-message">{{ $message }}</span>@enderror
-                    </div>
+            <h3>Student Details</h3>
 
-                    <div class="input-box">
-                        <label for="admissionNumber">Admission Number</label>
-                        <input type="text" id="admissionNumber" name="admissionNumber" value="{{ old('admissionNumber') }}">
-                        @error('admissionNumber')<span class="error-message">{{ $message }}</span>@enderror
-                    </div>
-                </div>
-
-                <div class="grid">
-                    <div class="input-box">
-                        <label for="dob">Date of Birth</label>
-                        <input type="date" id="dob" name="dob" required value="{{ old('dob') }}">
-                        @error('dob')<span class="error-message">{{ $message }}</span>@enderror
-                    </div>
-
-                    <div class="input-box">
-                        <label for="gender">Gender</label>
-                        <select id="gender" name="gender" required>
-                            <option value="">-- Select Gender --</option>
-                            <option value="Male" {{ old('gender') == 'Male' ? 'selected' : '' }}>Male</option>
-                            <option value="Female" {{ old('gender') == 'Female' ? 'selected' : '' }}>Female</option>
-                            <option value="Other" {{ old('gender') == 'Other' ? 'selected' : '' }}>Other</option>
-                        </select>
-                        @error('gender')<span class="error-message">{{ $message }}</span>@enderror
-                    </div>
-                </div>
-
-                <div class="grid">
-                    <div class="input-box">
-                        <label for="studentClass">Class/Grade</label>
-                        <select id="studentClass" name="studentClass" required>
-                            <option value="">Select Grade</option>
-                            @for ($i = 1; $i <= 12; $i++)
-                                <option value="{{ $i }}" {{ old('studentClass') == $i ? 'selected' : '' }}>Grade {{ $i }}</option>
-                            @endfor
-                        </select>
-                        @error('studentClass')<span class="error-message">{{ $message }}</span>@enderror
-                    </div>
-                    <div class="input-box">
-                        <label for="password">Password</label>
-                        <input type="password" id="password" name="password" required>
-                        @error('password')<span class="error-message">{{ $message }}</span>@enderror
-                    </div>
-                </div>
-                <div class="grid">
-                    <div class="input-box" style="grid-column: 1 / 3;">
-                        <label for="password_confirmation">Confirm Password</label>
-                        <input type="password" id="password_confirmation" name="password_confirmation" required>
-                    </div>
-                </div>
-
-                <div class="grid">
-                    <div class="input-box">
-                        <label for="bloodGroup">Blood Group (e.g., A+)</label>
-                        <input type="text" id="bloodGroup" name="bloodGroup" value="{{ old('bloodGroup') }}">
-                        @error('bloodGroup')<span class="error-message">{{ $message }}</span>@enderror
-                    </div>
-
-                    <div class="input-box">
-                        <label for="email">Student Email (Optional)</label>
-                        <input type="email" id="email" name="email" value="{{ old('email') }}">
-                        @error('email')<span class="error-message">{{ $message }}</span>@enderror
-                    </div>
-                </div>
-                
-                <h3>Parent/Guardian 1 (Primary)</h3>
-
-                <div class="grid">
-                    <div class="input-box">
-                        <label for="parent1Name">Full Name</label>
-                        <input type="text" id="parent1Name" name="parent1Name" required value="{{ old('parent1Name') }}">
-                        @error('parent1Name')<span class="error-message">{{ $message }}</span>@enderror
-                    </div>
-                    <div class="input-box">
-                        <label for="parent1Phone">Phone Number</label>
-                        <input type="tel" id="parent1Phone" name="parent1Phone" required value="{{ old('parent1Phone') }}">
-                        @error('parent1Phone')<span class="error-message">{{ $message }}</span>@enderror
-                    </div>
-                    <div class="input-box" style="grid-column: 1 / 3;">
-                        <label for="parent1Email">Email</label>
-                        <input type="email" id="parent1Email" name="parent1Email" required value="{{ old('parent1Email') }}">
-                        @error('parent1Email')<span class="error-message">{{ $message }}</span>@enderror
-                    </div>
-                </div>
-                
-                <h3>Parent/Guardian 2 (Secondary)</h3>
-                
-                <div class="grid">
-                    <div class="input-box">
-                        <label for="parent2Name">Full Name (Optional)</label>
-                        <input type="text" id="parent2Name" name="parent2Name" value="{{ old('parent2Name') }}">
-                        @error('parent2Name')<span class="error-message">{{ $message }}</span>@enderror
-                    </div>
-                    <div class="input-box">
-                        <label for="parent2Phone">Phone Number (Optional)</label>
-                        <input type="tel" id="parent2Phone" name="parent2Phone" value="{{ old('parent2Phone') }}">
-                        @error('parent2Phone')<span class="error-message">{{ $message }}</span>@enderror
-                    </div>
-                </div>
-                
-                <h3>Address & Medical Information</h3>
-
-                <div class="grid">
-                    <div class="input-box" style="grid-column: 1 / 3;">
-                        <label for="address">Address</label>
-                        <textarea id="address" name="address" required>{{ old('address') }}</textarea>
-                        @error('address')<span class="error-message">{{ $message }}</span>@enderror
-                    </div>
-                </div>
-
-                <div class="grid">
-                    <div class="input-box">
-                        <label for="emergencyName">Emergency Contact Name</label>
-                        <input type="text" id="emergencyName" name="emergencyName" required value="{{ old('emergencyName') }}">
-                        @error('emergencyName')<span class="error-message">{{ $message }}</span>@enderror
-                    </div>
-                    <div class="input-box">
-                        <label for="emergencyPhone">Emergency Contact Phone</label>
-                        <input type="tel" id="emergencyPhone" name="emergencyPhone" required value="{{ old('emergencyPhone') }}">
-                        @error('emergencyPhone')<span class="error-message">{{ $message }}</span>@enderror
-                    </div>
-                </div>
-                
-                <div class="grid">
-                    <div class="input-box" style="grid-column: 1 / 3;">
-                        <label for="medicalNotes">Medical Notes/Allergies (Optional)</label>
-                        <textarea id="medicalNotes" name="medicalNotes">{{ old('medicalNotes') }}</textarea>
-                        @error('medicalNotes')<span class="error-message">{{ $message }}</span>@enderror
-                    </div>
+            <div class="grid">
+                <div class="input-box">
+                    <label for="full_name">Full Name</label>
+                    <input type="text" id="full_name" name="full_name" required value="{{ old('full_name') }}">
+                    @error('full_name')<span class="error-message">{{ $message }}</span>@enderror
                 </div>
 
                 <div class="input-box">
-                    <label class="checkbox-label">
-                        <input type="checkbox" name="terms" value="1" required {{ old('terms') ? 'checked' : '' }}>
-                        I agree to the terms and conditions.
-                    </label>
-                    @error('terms')<span class="error-message">{{ $message }}</span>@enderror
+                    <label for="admission_number">Admission Number</label>
+                    <input type="text" id="admission_number" name="admission_number" value="{{ old('admission_number') }}">
+                    @error('admission_number')<span class="error-message">{{ $message }}</span>@enderror
+                </div>
+            </div>
+
+            <div class="grid">
+                <div class="input-box">
+                    <label for="date_of_birth">Date of Birth</label>
+                    <input type="date" id="date_of_birth" name="date_of_birth" required value="{{ old('date_of_birth') }}">
+                    @error('date_of_birth')<span class="error-message">{{ $message }}</span>@enderror
                 </div>
 
+                <div class="input-box">
+                    <label for="gender">Gender</label>
+                    <select id="gender" name="gender" required>
+                        <option value="">-- Select Gender --</option>
+                        <option value="Male" {{ old('gender') == 'Male' ? 'selected' : '' }}>Male</option>
+                        <option value="Female" {{ old('gender') == 'Female' ? 'selected' : '' }}>Female</option>
+                        <option value="Other" {{ old('gender') == 'Other' ? 'selected' : '' }}>Other</option>
+                    </select>
+                    @error('gender')<span class="error-message">{{ $message }}</span>@enderror
+                </div>
+            </div>
 
-                <button type="submit">Register Student</button>
-                
-                <div class="login-link">
-                    Already registered? <a href="{{ route('student.login') }}">Log In here</a>
+            <div class="grid">
+                <div class="input-box">
+                    <label for="student_class">Class/Grade</label>
+                    <select id="student_class" name="student_class" required>
+                        <option value="">Select Grade</option>
+                        @for ($i = 1; $i <= 12; $i++)
+                            <option value="Grade {{ $i }}" {{ old('student_class') == 'Grade '.$i ? 'selected' : '' }}>
+                                Grade {{ $i }}
+                            </option>
+                        @endfor
+                    </select>
+                    @error('student_class')<span class="error-message">{{ $message }}</span>@enderror
                 </div>
 
-            </form>
-        </div>
+                <div class="input-box">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" required>
+                    @error('password')<span class="error-message">{{ $message }}</span>@enderror
+                </div>
+            </div>
 
-    </body>
+            <div class="grid">
+                <div class="input-box" style="grid-column: 1 / 3;">
+                    <label for="password_confirmation">Confirm Password</label>
+                    <input type="password" id="password_confirmation" name="password_confirmation" required>
+                </div>
+            </div>
+
+            <div class="grid">
+                <div class="input-box">
+                    <label for="blood_group">Blood Group (e.g. A+)</label>
+                    <input type="text" id="blood_group" name="blood_group" value="{{ old('blood_group') }}">
+                    @error('blood_group')<span class="error-message">{{ $message }}</span>@enderror
+                </div>
+
+                <div class="input-box">
+                    <label for="student_email">Student Email</label>
+                    <input type="email" id="student_email" name="student_email" value="{{ old('student_email') }}">
+                    @error('student_email')<span class="error-message">{{ $message }}</span>@enderror
+                </div>
+            </div>
+
+            <h3>Parent/Guardian 1 (Primary)</h3>
+
+            <div class="grid">
+                <div class="input-box">
+                    <label for="parent1_name">Full Name</label>
+                    <input type="text" id="parent1_name" name="parent1_name" required value="{{ old('parent1_name') }}">
+                    @error('parent1_name')<span class="error-message">{{ $message }}</span>@enderror
+                </div>
+
+                <div class="input-box">
+                    <label for="parent1_phone">Phone Number</label>
+                    <input type="tel" id="parent1_phone" name="parent1_phone" required value="{{ old('parent1_phone') }}">
+                    @error('parent1_phone')<span class="error-message">{{ $message }}</span>@enderror
+                </div>
+
+                <div class="input-box" style="grid-column: 1 / 3;">
+                    <label for="parent1_email">Email</label>
+                    <input type="email" id="parent1_email" name="parent1_email" required value="{{ old('parent1_email') }}">
+                    @error('parent1_email')<span class="error-message">{{ $message }}</span>@enderror
+                </div>
+            </div>
+
+            <h3>Parent/Guardian 2 (Secondary)</h3>
+
+            <div class="grid">
+                <div class="input-box">
+                    <label for="parent2_name">Full Name (Optional)</label>
+                    <input type="text" id="parent2_name" name="parent2_name" value="{{ old('parent2_name') }}">
+                    @error('parent2_name')<span class="error-message">{{ $message }}</span>@enderror
+                </div>
+
+                <div class="input-box">
+                    <label for="parent2_phone">Phone Number (Optional)</label>
+                    <input type="tel" id="parent2_phone" name="parent2_phone" value="{{ old('parent2_phone') }}">
+                    @error('parent2_phone')<span class="error-message">{{ $message }}</span>@enderror
+                </div>
+            </div>
+
+            <h3>Address & Medical Information</h3>
+
+            <div class="grid">
+                <div class="input-box" style="grid-column: 1 / 3;">
+                    <label for="address">Address</label>
+                    <textarea id="address" name="address" required>{{ old('address') }}</textarea>
+                    @error('address')<span class="error-message">{{ $message }}</span>@enderror
+                </div>
+            </div>
+
+            <div class="grid">
+                <div class="input-box">
+                    <label for="emergency_contact_name">Emergency Contact Name</label>
+                    <input type="text" id="emergency_contact_name" name="emergency_contact_name" required value="{{ old('emergency_contact_name') }}">
+                    @error('emergency_contact_name')<span class="error-message">{{ $message }}</span>@enderror
+                </div>
+
+                <div class="input-box">
+                    <label for="emergency_contact_phone">Emergency Contact Phone</label>
+                    <input type="tel" id="emergency_contact_phone" name="emergency_contact_phone" required value="{{ old('emergency_contact_phone') }}">
+                    @error('emergency_contact_phone')<span class="error-message">{{ $message }}</span>@enderror
+                </div>
+            </div>
+
+            <div class="grid">
+                <div class="input-box" style="grid-column: 1 / 3;">
+                    <label for="medical_notes">Medical Notes / Allergies (Optional)</label>
+                    <textarea id="medical_notes" name="medical_notes">{{ old('medical_notes') }}</textarea>
+                    @error('medical_notes')<span class="error-message">{{ $message }}</span>@enderror
+                </div>
+            </div>
+
+            <div class="input-box">
+                <label class="checkbox-label">
+                    <input type="checkbox" name="terms_agreed" value="1" {{ old('terms_agreed') ? 'checked' : '' }} required>
+                    I agree to the terms and conditions.
+                </label>
+                @error('terms_agreed')<span class="error-message">{{ $message }}</span>@enderror
+            </div>
+
+            <button type="submit">Register Student</button>
+
+            <div class="login-link">
+                Already registered? <a href="{{ route('student.login') }}">Log In here</a>
+            </div>
+
+        </form>
+    </div>
+
+</body>
+
+
 </html>

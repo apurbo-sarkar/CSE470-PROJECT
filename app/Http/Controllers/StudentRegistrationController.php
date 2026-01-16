@@ -4,64 +4,56 @@ namespace App\Http\Controllers;
 
 use App\Models\Student;
 use Illuminate\Http\Request;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\DB;
 
 class StudentRegistrationController extends Controller
 {
-    public function store(Request $request): RedirectResponse
+    public function store(Request $request)
     {
-        $validatedData = $request->validate([
-            'fullName' => 'required|string|max:255',
-            'admissionNumber' => 'required|string|max:255|unique:students,admission_number', 
-            'dob' => 'required|date',
-            'gender' => 'required|string|in:Male,Female,Other',
-            'studentClass' => 'required|string|max:255',
-            'bloodGroup' => 'nullable|string|max:5',
-            'email' => 'nullable|email|max:255',
+        $validated = $request->validate([
+            'full_name' => 'required|string|max:255',
+            'admission_number' => 'required|string|max:255|unique:students,admission_number',
+            'date_of_birth' => 'required|date',
+            'gender' => 'required|in:Male,Female,Other',
+            'student_class' => 'required|string',
+            'blood_group' => 'nullable|string|max:5',
+            'student_email' => 'required|email|max:255|unique:students,student_email',
             'password' => 'required|string|min:8|confirmed',
-            'parent1Name' => 'required|string|max:255',
-            'parent1Phone' => 'required|string|max:20',
-            'parent1Email' => 'required|email|max:255',
-            'parent2Name' => 'nullable|string|max:255',
-            'parent2Phone' => 'nullable|string|max:20',
+
+            'parent1_name' => 'required|string|max:255',
+            'parent1_phone' => 'required|string|max:20',
+            'parent1_email' => 'required|email|max:255',
+
+            'parent2_name' => 'nullable|string|max:255',
+            'parent2_phone' => 'nullable|string|max:20',
+
             'address' => 'required|string',
-            'emergencyName' => 'required|string|max:255',
-            'emergencyPhone' => 'required|string|max:20',
-            'medicalNotes' => 'nullable|string',
-            'terms' => 'required|accepted',
+            'emergency_contact_name' => 'required|string|max:255',
+            'emergency_contact_phone' => 'required|string|max:20',
+            'medical_notes' => 'nullable|string',
+
+            'terms_agreed' => 'accepted',
         ]);
 
+        DB::beginTransaction();
         try {
-            $studentClass = $validatedData['studentClass'];
-            if (is_numeric($studentClass)) {
-                $studentClass = 'Grade ' . $studentClass;
-            }
-            Student::create([
-                'full_name' => $validatedData['fullName'],
-                'admission_number' => $validatedData['admissionNumber'],
-                'date_of_birth' => $validatedData['dob'],
-                'gender' => $validatedData['gender'],
-                'student_class' => $studentClass,
-                'blood_group' => $validatedData['bloodGroup'],
-                'student_email' => $validatedData['email'],
-                'password' => Hash::make($validatedData['password']),
-                'parent1_name' => $validatedData['parent1Name'],
-                'parent1_phone' => $validatedData['parent1Phone'],
-                'parent1_email' => $validatedData['parent1Email'],
-                'parent2_name' => $validatedData['parent2Name'] ?? null,
-                'parent2_phone' => $validatedData['parent2Phone'] ?? null,
-                'address' => $validatedData['address'],
-                'emergency_contact_name' => $validatedData['emergencyName'],
-                'emergency_contact_phone' => $validatedData['emergencyPhone'],
-                'medical_notes' => $validatedData['medicalNotes'] ?? null,
-                'terms_agreed' => true,
-            ]);
+            $validated['password'] = Hash::make($validated['password']);
+            $validated['academic_status'] = 'active';
 
-            return redirect()->route('student.login')->with('success', 'Registration successful! You can now log in.');
+            Student::create($validated);
+            DB::commit();
 
-        } catch (\Exception $e) {
-            return back()->withInput()->withErrors(['error' => 'Registration failed: ' . $e->getMessage()]);
+            return redirect()
+                ->route('student.login')
+                ->with('success', 'Registration successful! You can now log in.');
+        } catch (\Throwable $e) {
+            DB::rollBack();
+            report($e);
+
+            return back()
+                ->withInput()
+                ->withErrors(['error' => 'Registration failed. Please try again.']);
         }
     }
 }

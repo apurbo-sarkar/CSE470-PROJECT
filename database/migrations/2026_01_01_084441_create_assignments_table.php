@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('title', 255);
             $table->text('description')->nullable();
-            $table->unsignedTinyInteger('class'); // Class 1–10
+            $table->unsignedTinyInteger('class'); 
             $table->string('file_path');
             $table->date('due_date')->nullable();
             $table->timestamps();
